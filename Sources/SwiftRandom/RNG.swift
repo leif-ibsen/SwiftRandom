@@ -18,7 +18,7 @@ public typealias UInt128 = (hi: UInt64, lo: UInt64)
 
 public class RNG {
     
-    var bgProtocol:BitGenerator
+    var bgProtocol: BitGenerator
     var bits: UInt64
     var remainingBits: Int
     

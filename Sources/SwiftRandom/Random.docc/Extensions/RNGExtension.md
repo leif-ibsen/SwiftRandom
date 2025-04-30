@@ -14,7 +14,7 @@ There are four such classes:
 * ``PCG32`` that uses the 32 bit Permuted Congruential Generator algorithm
 * ``PCG64`` that uses the 64 bit Permuted Congruential Generator algorithm
 
-The internal state of a generator instance can be saved with the ``getState()`` method and reinstated later with the ``getState()`` method.
+The internal state of a generator instance can be saved with the ``getState()`` method and reinstated later with the ``setState(state:)`` method.
 
 ## Topics
 
