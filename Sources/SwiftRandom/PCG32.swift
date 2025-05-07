@@ -67,14 +67,20 @@ public class PCG32: BitGenerator, Equatable {
     }
 
     public func nextUInt64() -> UInt64 {
-        return UInt64(nextUInt32()) << 32 | UInt64(nextUInt32())
+        return UInt64(self.nextUInt32()) << 32 | UInt64(self.nextUInt32())
     }
 
-    // Double value in 0.0 ..< 1.0 or 0.0 ... 1.0
-    public func nextDouble(open: Bool = true) -> Double {
-        return (Double(self.nextUInt32() >> 5) * MT32.D26 + Double(self.nextUInt32() >> 6)) / (open ? MT32.D53 : MT32.D53_1)
+    public func nextUInt128() -> UInt128 {
+        return UInt128(self.nextUInt64()) << 64 | UInt128(self.nextUInt64())
     }
 
+    public func nextBit() -> Bool {
+        return nextUInt32() & 1 == 1
+    }
+
+    /// Retrieve the internal generator state
+    ///
+    /// - Returns: The internal generator state - 16 bytes
     public func getState() -> Bytes {
         var bytes = Bytes(repeating: 0, count: 16)
         bytes[0] = Byte((self.state >> 0) & 0xff)
@@ -96,6 +102,10 @@ public class PCG32: BitGenerator, Equatable {
         return bytes
     }
 
+    /// Reinstate the internal generator state
+    ///
+    /// - Parameters:
+    ///   - state: The new internal generator state - 16 bytes
     public func setState(state: Bytes) {
         if state.count == 16 {
             self.state = UInt64(state[0])

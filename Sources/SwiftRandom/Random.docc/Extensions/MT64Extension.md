@@ -15,7 +15,8 @@ The 64 bit Mersenne Twister
 
 - ``nextUInt32()``
 - ``nextUInt64()``
-- ``nextDouble(open:)``
+- ``nextUInt128()``
+- ``nextBit()``
 - ``getState()``
 - ``setState(state:)``
 

@@ -9,13 +9,14 @@ or the Permuted Congruential Generator algorithm.
 
 It generates the following:
 
-* Random floating point values in a specified open or closed range
+* Random floating point values in a specified open range
 * Random integers in a specified open or closed range
 * Random unsigned integers in a specified open or closed range
 * Random bits
-* A uniform distribution in a specified open or closed range
+* A uniform distribution in a specified open range
 * A normal distribution with specified mean and deviation
 * An exponential distribution with specified mean
+* Mean value, variance and standard deviation of a set of values
 
 Random number generation uses a ``BitGenerator`` which is one of ``MT32``, ``MT64``, ``PCG32`` or ``PCG64``.
 
@@ -33,20 +34,20 @@ let pcg32 = PCG32(state: 1234)
 // Create the RNG instance
 let rng = RNG(bg: pcg32)
 
-// Create 20 normal distributed values with mean 2.0 and standard deviation 1.3
-var x = [Double](repeating: 0.0, count: 20)
+// Create 1000 normal distributed values with mean 2.0 and standard deviation 1.3
+var x = [Double](repeating: 0.0, count: 1000)
 rng.normalDistribution(mean: 2.0, stdev: 1.3, values: &x)
 
-print(x)
+// See the actual mean and standard deviation
+print("mean:  ", rng.meanValue(of: x))
+print("stdDev:", rng.standardDeviation(of: x))
 ```
 
 giving:
 
 ```swift
-[2.1734545110811996, 1.335732163289224, 0.941024900396149, 3.2264230814632975, 5.459014841733499,
-1.800905802727681, 1.8800986950394902, 4.590683327055603, 1.0172035621489117, 2.9474413989338397,
-0.6246918556470995, 2.851867736518513, 2.753185266377434, -0.3036907536413542, 2.5184316925825057,
-2.8841595259841846, 0.6693799134497671, 1.94079213687274, 1.3378909025908157, 2.564141001379788]
+mean:   1.9523520613523375
+stdDev: 1.2654344086187834
 ```
 
 ### Example 2
@@ -65,7 +66,6 @@ for _ in 0 ..< 1000 {
 }
 
 print(counts)
-
 ```
 
 giving (for example):
@@ -80,14 +80,17 @@ To use SwiftRandom, in your project Package.swift file add a dependency like
 
 ```swift
 dependencies: [
-  package(url: "https://github.com/leif-ibsen/SwiftRandom", from: "1.1.0"),
+  package(url: "https://github.com/leif-ibsen/SwiftRandom", from: "2.0.0"),
 ]
 ```
 
 SwiftRandom itself does not depend on other packages.
 
 > Important:
-SwiftRandom requires Swift 5.0. It also requires that the `Int` and `UInt` types be 64 bit types.
+SwiftRandom requires Swift 6.0. It also requires that the `Int` and `UInt` types be 64 bit types.
+>
+> SwiftRandom uses the `Int128` and `UInt128` types. Therefore, for `macOS` the version must be at least 15,
+for `iOS` the version must be at least 18, and for `watchOS` the version must be at least 11.
 
 ## Topics
 
@@ -107,7 +110,6 @@ SwiftRandom requires Swift 5.0. It also requires that the `Int` and `UInt` types
 
 - ``SwiftRandom/Byte``
 - ``SwiftRandom/Bytes``
-- ``SwiftRandom/UInt128``
 
 ### Additional Information
 

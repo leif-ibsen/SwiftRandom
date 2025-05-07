@@ -18,12 +18,15 @@ public protocol BitGenerator {
     /// - Returns: A random 64 bit unsigned integer
     func nextUInt64() -> UInt64
     
-    /// Generate a random floating point value in either 0.0 ..< 1.0 or 0.0 ... 1.0
+    /// Generate a random 128 bit unsigned integer
     ///
-    /// - Parameters:
-    ///   - open:`true` implies 0.0 ..< 1.0 `false` implies 0.0 ... 1.0
-    /// - Returns: A random floating point value in the specified range
-    func nextDouble(open: Bool) -> Double
+    /// - Returns: A random 128 bit unsigned integer
+    func nextUInt128() -> UInt128
+    
+    /// Generate a random bit
+    ///
+    /// - Returns: A random bit
+    func nextBit() -> Bool
 
     /// Retrieve the internal generator state
     ///

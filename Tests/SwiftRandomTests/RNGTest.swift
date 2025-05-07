@@ -11,8 +11,8 @@ import XCTest
 final class RNGTest: XCTestCase {
 
     func doTestInt(_ rng: RNG) throws {
-        var x1 = [Int](repeating: 0, count: 1000)
-        var x2 = [Int](repeating: 0, count: 1000)
+        var x1 = [Int](repeating: 0, count: 1001)
+        var x2 = [Int](repeating: 0, count: 1001)
         var state = rng.getState()
         for i in 0 ..< x1.count {
             x1[i] = rng.randomInt(in: Int.min ... Int.max)
@@ -43,8 +43,8 @@ final class RNGTest: XCTestCase {
     }
 
     func doTestInt32(_ rng: RNG) throws {
-        var x1 = [Int32](repeating: 0, count: 1000)
-        var x2 = [Int32](repeating: 0, count: 1000)
+        var x1 = [Int32](repeating: 0, count: 1001)
+        var x2 = [Int32](repeating: 0, count: 1001)
         var state = rng.getState()
         for i in 0 ..< x1.count {
             x1[i] = rng.randomInt(in: Int32.min ... Int32.max)
@@ -75,8 +75,8 @@ final class RNGTest: XCTestCase {
     }
 
     func doTestInt64(_ rng: RNG) throws {
-        var x1 = [Int64](repeating: 0, count: 1000)
-        var x2 = [Int64](repeating: 0, count: 1000)
+        var x1 = [Int64](repeating: 0, count: 1001)
+        var x2 = [Int64](repeating: 0, count: 1001)
         var state = rng.getState()
         for i in 0 ..< x1.count {
             x1[i] = rng.randomInt(in: Int64.min ... Int64.max)
@@ -106,9 +106,41 @@ final class RNGTest: XCTestCase {
         XCTAssertEqual(x1, x2)
     }
 
+    func doTestInt128(_ rng: RNG) throws {
+        var x1 = [Int128](repeating: 0, count: 1001)
+        var x2 = [Int128](repeating: 0, count: 1001)
+        var state = rng.getState()
+        for i in 0 ..< x1.count {
+            x1[i] = rng.randomInt(in: Int128.min ... Int128.max)
+        }
+        rng.setState(state: state)
+        for i in 0 ..< x2.count {
+            x2[i] = rng.randomInt(in: Int128.min ... Int128.max)
+        }
+        XCTAssertEqual(x1, x2)
+        state = rng.getState()
+        for i in 0 ..< x1.count {
+            x1[i] = rng.randomInt(in: 0 ... Int128.max)
+        }
+        rng.setState(state: state)
+        for i in 0 ..< x2.count {
+            x2[i] = rng.randomInt(in: 0 ... Int128.max)
+        }
+        XCTAssertEqual(x1, x2)
+        state = rng.getState()
+        for i in 0 ..< x1.count {
+            x1[i] = rng.randomInt(in: Int128.min ... 0)
+        }
+        rng.setState(state: state)
+        for i in 0 ..< x2.count {
+            x2[i] = rng.randomInt(in: Int128.min ... 0)
+        }
+        XCTAssertEqual(x1, x2)
+    }
+
     func doTestUInt(_ rng: RNG) throws {
-        var x1 = [UInt](repeating: 0, count: 1000)
-        var x2 = [UInt](repeating: 0, count: 1000)
+        var x1 = [UInt](repeating: 0, count: 1001)
+        var x2 = [UInt](repeating: 0, count: 1001)
         let state = rng.getState()
         for i in 0 ..< x1.count {
             x1[i] = rng.randomUInt(in: 0 ... UInt.max)
@@ -121,8 +153,8 @@ final class RNGTest: XCTestCase {
     }
 
     func doTestUInt32(_ rng: RNG) throws {
-        var x1 = [UInt32](repeating: 0, count: 1000)
-        var x2 = [UInt32](repeating: 0, count: 1000)
+        var x1 = [UInt32](repeating: 0, count: 1001)
+        var x2 = [UInt32](repeating: 0, count: 1001)
         let state = rng.getState()
         for i in 0 ..< x1.count {
             x1[i] = rng.randomUInt(in: 0 ... UInt32.max)
@@ -135,8 +167,8 @@ final class RNGTest: XCTestCase {
     }
 
     func doTestUInt64(_ rng: RNG) throws {
-        var x1 = [UInt64](repeating: 0, count: 1000)
-        var x2 = [UInt64](repeating: 0, count: 1000)
+        var x1 = [UInt64](repeating: 0, count: 1001)
+        var x2 = [UInt64](repeating: 0, count: 1001)
         let state = rng.getState()
         for i in 0 ..< x1.count {
             x1[i] = rng.randomUInt(in: 0 ... UInt64.max)
@@ -144,6 +176,20 @@ final class RNGTest: XCTestCase {
         rng.setState(state: state)
         for i in 0 ..< x2.count {
             x2[i] = rng.randomUInt(in: 0 ... UInt64.max)
+        }
+        XCTAssertEqual(x1, x2)
+    }
+
+    func doTestUInt128(_ rng: RNG) throws {
+        var x1 = [UInt128](repeating: 0, count: 1001)
+        var x2 = [UInt128](repeating: 0, count: 1001)
+        let state = rng.getState()
+        for i in 0 ..< x1.count {
+            x1[i] = rng.randomUInt(in: 0 ... UInt128.max)
+        }
+        rng.setState(state: state)
+        for i in 0 ..< x2.count {
+            x2[i] = rng.randomUInt(in: 0 ... UInt128.max)
         }
         XCTAssertEqual(x1, x2)
     }
@@ -181,6 +227,17 @@ final class RNGTest: XCTestCase {
         XCTAssertTrue(rng.randomInt(in: Int64.min ..< Int64.min + 1) == Int64.min)
         let x64_1 = rng.randomInt(in: Int64.min ... Int64.min + 1)
         XCTAssertTrue(x64_1 == Int64.min || x64_1 == Int64.min + 1)
+        
+        XCTAssertTrue(rng.randomInt(in: Int128(0) ... Int128(0)) == 0)
+        XCTAssertTrue(rng.randomInt(in: Int128(0) ..< Int128(1)) == 0)
+        XCTAssertTrue(rng.randomInt(in: Int128.max ... Int128.max) == Int128.max)
+        XCTAssertTrue(rng.randomInt(in: Int128.max - 1 ..< Int128.max) == Int128.max - 1)
+        let x128 = rng.randomInt(in: Int128.max - 1 ... Int128.max)
+        XCTAssertTrue(x128 == Int128.max - 1 || x128 == Int128.max)
+        XCTAssertTrue(rng.randomInt(in: Int128.min ... Int128.min) == Int128.min)
+        XCTAssertTrue(rng.randomInt(in: Int128.min ..< Int128.min + 1) == Int128.min)
+        let x128_1 = rng.randomInt(in: Int128.min ... Int128.min + 1)
+        XCTAssertTrue(x128_1 == Int128.min || x128_1 == Int128.min + 1)
     }
 
     func doTestMinMaxUInt(_ rng: RNG) throws {
@@ -210,16 +267,21 @@ final class RNGTest: XCTestCase {
         XCTAssertTrue(x64 == UInt64.max - 1 || x64 == UInt64.max)
         XCTAssertTrue(rng.randomUInt(in: UInt64.min ... UInt64.min) == UInt64.min)
         XCTAssertTrue(rng.randomUInt(in: UInt64.min ..< UInt64.min + 1) == UInt64.min)
+
+        XCTAssertTrue(rng.randomUInt(in: UInt128(0) ... UInt128(0)) == 0)
+        XCTAssertTrue(rng.randomUInt(in: UInt128(0) ..< UInt128(1)) == 0)
+        XCTAssertTrue(rng.randomUInt(in: UInt128.max ... UInt128.max) == UInt128.max)
+        XCTAssertTrue(rng.randomUInt(in: UInt128.max - 1 ..< UInt128.max) == UInt128.max - 1)
+        let x128 = rng.randomUInt(in: UInt128.max - 1 ... UInt128.max)
+        XCTAssertTrue(x128 == UInt128.max - 1 || x128 == UInt128.max)
+        XCTAssertTrue(rng.randomUInt(in: UInt128.min ... UInt128.min) == UInt128.min)
+        XCTAssertTrue(rng.randomUInt(in: UInt128.min ..< UInt128.min + 1) == UInt128.min)
     }
 
     func doTestFloat(_ rng: RNG) throws {
         for _ in 0 ..< 1000 {
             let x = rng.randomFloat(in: 0.0 ..< 1.0)
             XCTAssertTrue(0.0 <= x && x < 1.0)
-        }
-        for _ in 0 ..< 1000 {
-            let x = rng.randomFloat(in: 0.0 ... 1.0)
-            XCTAssertTrue(0.0 <= x && x <= 1.0)
         }
     }
 
@@ -240,6 +302,10 @@ final class RNGTest: XCTestCase {
         try doTestInt64(mt64)
         try doTestInt64(pcg32)
         try doTestInt64(pcg64)
+        try doTestInt128(mt32)
+        try doTestInt128(mt64)
+        try doTestInt128(pcg32)
+        try doTestInt128(pcg64)
     }
 
     func testUInt() throws {
@@ -259,6 +325,10 @@ final class RNGTest: XCTestCase {
         try doTestUInt64(mt64)
         try doTestUInt64(pcg32)
         try doTestUInt64(pcg64)
+        try doTestUInt128(mt32)
+        try doTestUInt128(mt64)
+        try doTestUInt128(pcg32)
+        try doTestUInt128(pcg64)
     }
 
     func testMinMaxInt() throws {

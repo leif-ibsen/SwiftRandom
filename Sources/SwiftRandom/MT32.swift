@@ -9,10 +9,6 @@ import Foundation
 
 public class MT32: BitGenerator, Equatable {
     
-    static let D26 = Double(1 << 26)
-    static let D53 = Double(1 << 53)
-    static let D53_1 = Double(1 << 53 - 1)
-
     static let N = 624
     
     var X: [UInt32]
@@ -119,11 +115,17 @@ public class MT32: BitGenerator, Equatable {
         return UInt64(self.nextUInt32()) << 32 | UInt64(self.nextUInt32())
     }
     
-    // Double value in 0.0 ..< 1.0 or 0.0 ... 1.0
-    public func nextDouble(open: Bool = true) -> Double {
-        return (Double(self.nextUInt32() >> 5) * MT32.D26 + Double(self.nextUInt32() >> 6)) / (open ? MT32.D53 : MT32.D53_1)
+    public func nextUInt128() -> UInt128 {
+        return UInt128(self.nextUInt64()) << 64 | UInt128(self.nextUInt64())
+    }
+    
+    public func nextBit() -> Bool {
+        return nextUInt32() & 1 == 1
     }
 
+    /// Retrieve the internal generator state
+    ///
+    /// - Returns: The internal generator state - 2498 bytes
     public func getState() -> Bytes {
         var state = Bytes(repeating: 0, count: 2 + 4 * MT32.N)
         state[0] = Byte(self.w & 0xff)
@@ -139,6 +141,10 @@ public class MT32: BitGenerator, Equatable {
         return state
     }
 
+    /// Reinstate the internal generator state
+    ///
+    /// - Parameters:
+    ///   - state: The new internal generator state - 2498 bytes
     public func setState(state: Bytes) {
         if state.count == 2 + 4 * MT32.N {
             let W = Int(state[1]) << 8 | Int(state[0])

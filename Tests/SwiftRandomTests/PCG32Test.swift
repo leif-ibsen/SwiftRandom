@@ -76,6 +76,6 @@ final class PCG32Test: XCTestCase {
         let pcg32 = PCG32()
         let pcgx = PCG32(pcg: pcg32)
         XCTAssertEqual(pcg32, pcgx)
-        XCTAssertEqual(pcg32.nextDouble(), pcgx.nextDouble())
+        XCTAssertEqual(pcg32.nextUInt64(), pcgx.nextUInt64())
     }
 }

@@ -13,8 +13,6 @@ public class MT64: BitGenerator, Equatable {
 
     var X: [UInt64]
     var w: Int
-    var UInt32x2: UInt64
-    var hasUInt32: Bool
 
     /// Constructs an MT64 instance from a specified seed
     ///
@@ -29,8 +27,6 @@ public class MT64: BitGenerator, Equatable {
             self.X[i] &*= self.X[i - 1] ^ (self.X[i - 1] >> 62)
             self.X[i] &+= UInt64(i)
         }
-        self.UInt32x2 = 0
-        self.hasUInt32 = false
     }
 
     /// Constructs an MT64 instance from a randomly generated seed
@@ -103,14 +99,7 @@ public class MT64: BitGenerator, Equatable {
     }
 
     public func nextUInt32() -> UInt32 {
-        if self.hasUInt32 {
-            self.hasUInt32 = false
-            return UInt32(self.UInt32x2 >> 32)
-        } else {
-            self.hasUInt32 = true
-            self.UInt32x2 = self.nextUInt64()
-            return UInt32(self.UInt32x2 & 0xffffffff)
-        }
+        return UInt32(self.nextUInt64() & 0xffffffff)
     }
 
     public func nextUInt64() -> UInt64 {
@@ -125,12 +114,18 @@ public class MT64: BitGenerator, Equatable {
         self.w += 1
         return y
     }
-
-    // Double value in 0.0 ..< 1.0 or 0.0 ... 1.0
-    public func nextDouble(open: Bool = true) -> Double {
-        return Double(self.nextUInt64() >> 11) / (open ? MT32.D53 : MT32.D53_1)
+    
+    public func nextUInt128() -> UInt128 {
+        return UInt128(self.nextUInt64()) << 64 | UInt128(self.nextUInt64())
     }
 
+    public func nextBit() -> Bool {
+        return nextUInt64() & 1 == 1
+    }
+
+    /// Retrieve the internal generator state
+    ///
+    /// - Returns: The internal generator state - 2498 bytes
     public func getState() -> Bytes {
         var state = Bytes(repeating: 0, count: 2 + 8 * MT64.N)
         state[0] = Byte(self.w & 0xff)
@@ -150,6 +145,10 @@ public class MT64: BitGenerator, Equatable {
         return state
     }
 
+    /// Reinstate the internal generator state
+    ///
+    /// - Parameters:
+    ///   - state: The new internal generator state - 2498 bytes
     public func setState(state: Bytes) {
         if state.count == 2 + 8 * MT64.N {
             let W = Int(state[1]) << 8 | Int(state[0])

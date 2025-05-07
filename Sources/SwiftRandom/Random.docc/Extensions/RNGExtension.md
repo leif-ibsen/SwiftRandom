@@ -25,6 +25,7 @@ The internal state of a generator instance can be saved with the ``getState()`` 
 ### Methods
 
 - ``randomBit()``
+- ``randomFloat(in:)``
 - ``getState()``
 - ``setState(state:)``
 
@@ -33,24 +34,28 @@ The internal state of a generator instance can be saved with the ``getState()`` 
 - ``randomInt(in:)-4lun3``
 - ``randomInt(in:)-3wjtg``
 - ``randomInt(in:)-4hjuu``
+- ``randomInt(in:)-62zue``
 - ``randomUInt(in:)-53fz8``
 - ``randomUInt(in:)-46j03``
 - ``randomUInt(in:)-487j0``
-- ``randomFloat(in:)-9uni9``
+- ``randomUInt(in:)-7besu``
 
 ### Closed range
 
 - ``randomInt(in:)-8hvsa``
 - ``randomInt(in:)-1ox85``
 - ``randomInt(in:)-6fu34``
+- ``randomInt(in:)-esc7``
 - ``randomUInt(in:)-5b46m``
 - ``randomUInt(in:)-64t51``
 - ``randomUInt(in:)-29xcy``
-- ``randomFloat(in:)-yaia``
+- ``randomUInt(in:)-99p5k``
 
 ### Distributions
 
 - ``uniformDistribution(in:values:)-51y8o``
-- ``uniformDistribution(in:values:)-moek``
 - ``normalDistribution(mean:stdev:values:)``
 - ``exponentialDistribution(mean:values:)``
+- ``meanValue(of:)``
+- ``variance(of:)``
+- ``standardDeviation(of:)``

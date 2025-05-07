@@ -19,7 +19,8 @@ The 32 bit Permuted Congruential Generator: PCG-XSH-RR
 
 - ``nextUInt32()``
 - ``nextUInt64()``
-- ``nextDouble(open:)``
+- ``nextUInt128()``
+- ``nextBit()``
 - ``getState()``
 - ``setState(state:)``
 - ``advance(n:)``
