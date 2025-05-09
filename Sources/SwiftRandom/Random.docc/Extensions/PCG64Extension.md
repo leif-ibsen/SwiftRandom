@@ -17,6 +17,7 @@ The 64 bit Permuted Congruential Generator: PCG-XSL-RR
 
 ### Methods
 
+- ``next()``
 - ``nextUInt32()``
 - ``nextUInt64()``
 - ``nextUInt128()``

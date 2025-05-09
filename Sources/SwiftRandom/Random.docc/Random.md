@@ -80,7 +80,7 @@ To use SwiftRandom, in your project Package.swift file add a dependency like
 
 ```swift
 dependencies: [
-  package(url: "https://github.com/leif-ibsen/SwiftRandom", from: "2.0.0"),
+  package(url: "https://github.com/leif-ibsen/SwiftRandom", from: "2.1.0"),
 ]
 ```
 

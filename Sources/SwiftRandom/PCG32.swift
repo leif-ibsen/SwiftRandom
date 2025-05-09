@@ -58,6 +58,13 @@ public class PCG32: BitGenerator, Equatable {
         self.advance(n: advanced)
     }
 
+    /// Required by the RandomNumberGenerator protocol
+    ///
+    /// - Returns: A random unsigned 64 bit integer
+    public func next() -> UInt64 {
+        return self.nextUInt64()
+    }
+
     public func nextUInt32() -> UInt32 {
         let n = Int(self.state >> 59)
         let x = UInt32(((self.state ^ (self.state >> 18)) >> 27) & 0xffffffff)

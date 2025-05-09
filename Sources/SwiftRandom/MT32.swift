@@ -91,11 +91,18 @@ public class MT32: BitGenerator, Equatable {
             let tmp = (self.X[i] & 0x80000000) &+ (self.X[(i + 1) % MT32.N] & 0x7fffffff)
             var tmpA = tmp >> 1
             if tmp & 1 == 1 {
-                tmpA ^= 0x9908B0df
+                tmpA ^= 0x9908b0df
             }
             self.X[i] = self.X[(i + 397) % MT32.N] ^ tmpA
         }
         self.w = 0
+    }
+
+    /// Required by the RandomNumberGenerator protocol
+    ///
+    /// - Returns: A random unsigned 64 bit integer
+    public func next() -> UInt64 {
+        return self.nextUInt64()
     }
 
     public func nextUInt32() -> UInt32 {

@@ -13,6 +13,7 @@ The 32 bit Mersenne Twister
 
 ### Methods
 
+- ``next()``
 - ``nextUInt32()``
 - ``nextUInt64()``
 - ``nextUInt128()``

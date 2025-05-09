@@ -6,7 +6,7 @@
 //
 
 /// The bit generator protocol that the RNG class requires
-public protocol BitGenerator {
+public protocol BitGenerator: RandomNumberGenerator {
 
     /// Generate a random 32 bit unsigned integer
     ///
