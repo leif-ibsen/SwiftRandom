@@ -80,7 +80,7 @@ To use SwiftRandom, in your project Package.swift file add a dependency like
 
 ```swift
 dependencies: [
-  package(url: "https://github.com/leif-ibsen/SwiftRandom", from: "2.1.0"),
+  package(url: "https://github.com/leif-ibsen/SwiftRandom", from: "3.0.0"),
 ]
 ```
 
@@ -94,7 +94,7 @@ for `iOS` the version must be at least 18, and for `watchOS` the version must be
 
 ## Topics
 
-### Classes
+### Structures
 
 - ``SwiftRandom/RNG``
 - ``SwiftRandom/MT32``

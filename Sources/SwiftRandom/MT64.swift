@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class MT64: BitGenerator, Equatable {
+public struct MT64: BitGenerator, CustomStringConvertible, Equatable {
     
     static let N = 312
 
@@ -31,7 +31,7 @@ public class MT64: BitGenerator, Equatable {
 
     /// Constructs an MT64 instance from a randomly generated seed
     ///
-    public convenience init() {
+    public init() {
         var seed = [UInt64](repeating: 0, count: MT64.N)
         guard SecRandomCopyBytes(kSecRandomDefault, 8 * seed.count, &seed) == errSecSuccess else {
             fatalError("random failed")
@@ -43,7 +43,7 @@ public class MT64: BitGenerator, Equatable {
     ///
     /// - Parameters:
     ///   - seed: The seed array
-    public convenience init(seed: [UInt64]) {
+    public init(seed: [UInt64]) {
         self.init(seed: UInt64(19650218))
         var i = 1
         var j = 0
@@ -76,42 +76,47 @@ public class MT64: BitGenerator, Equatable {
         }
         self.X[0] = 0x8000000000000000
     }
-    
-    /// Constructs an MT64 instance which is a copy of another MT64
-    ///
-    /// - Parameters:
-    ///   - mt: The other MT64
-    public convenience init(mt: MT64) {
-        self.init()
-        self.setState(state: mt.getState())
+
+    public var description: String {
+        return "64 bit Mersenne Twister mt19937"
     }
 
-    func twist() {
-        for i in 0 ..< MT64.N {
-            let tmp = (self.X[i] & 0xffffffff80000000) &+ (self.X[(i + 1) % MT64.N] & 0x7fffffff)
+    /// Required by the RandomNumberGenerator protocol
+    ///
+    /// - Returns: A random unsigned 64 bit integer
+    public mutating func next() -> UInt64 {
+        return self.nextUInt64()
+    }
+
+    public mutating func nextUInt32() -> UInt32 {
+        return UInt32(self.nextUInt64() & 0xffffffff)
+    }
+
+    public mutating func nextUInt64() -> UInt64 {
+        if self.w == MT64.N {
+            for i in 0 ..< 156 {
+                let tmp = (self.X[i] & 0xffffffff80000000) | (self.X[i + 1] & 0x7fffffff)
+                var tmpA = tmp >> 1
+                if tmp & 1 == 1 {
+                    tmpA ^= 0xb5026f5aa96619e9
+                }
+                self.X[i] = self.X[i + 156] ^ tmpA
+            }
+            for i in 156 ..< 311 {
+                let tmp = (self.X[i] & 0xffffffff80000000) | (self.X[i + 1] & 0x7fffffff)
+                var tmpA = tmp >> 1
+                if tmp & 1 == 1 {
+                    tmpA ^= 0xb5026f5aa96619e9
+                }
+                self.X[i] = self.X[i - 156] ^ tmpA
+            }
+            let tmp = (self.X[311] & 0xffffffff80000000) | (self.X[0] & 0x7fffffff)
             var tmpA = tmp >> 1
             if tmp & 1 == 1 {
                 tmpA ^= 0xb5026f5aa96619e9
             }
-            self.X[i] = self.X[(i + 156) % MT64.N] ^ tmpA
-        }
-        self.w = 0
-    }
-    
-    /// Required by the RandomNumberGenerator protocol
-    ///
-    /// - Returns: A random unsigned 64 bit integer
-    public func next() -> UInt64 {
-        return self.nextUInt64()
-    }
-
-    public func nextUInt32() -> UInt32 {
-        return UInt32(self.nextUInt64() & 0xffffffff)
-    }
-
-    public func nextUInt64() -> UInt64 {
-        if self.w == MT64.N {
-            self.twist()
+            self.X[311] = self.X[155] ^ tmpA
+            self.w = 0
         }
         var y = self.X[self.w]
         y ^= (y >> 29) & 0x5555555555555555
@@ -122,11 +127,11 @@ public class MT64: BitGenerator, Equatable {
         return y
     }
     
-    public func nextUInt128() -> UInt128 {
+    public mutating func nextUInt128() -> UInt128 {
         return UInt128(self.nextUInt64()) << 64 | UInt128(self.nextUInt64())
     }
 
-    public func nextBit() -> Bool {
+    public mutating func nextBit() -> Bool {
         return nextUInt64() & 1 == 1
     }
 
@@ -156,7 +161,7 @@ public class MT64: BitGenerator, Equatable {
     ///
     /// - Parameters:
     ///   - state: The new internal generator state - 2498 bytes
-    public func setState(state: Bytes) {
+    public mutating func setState(state: Bytes) {
         if state.count == 2 + 8 * MT64.N {
             let W = Int(state[1]) << 8 | Int(state[0])
             if W <= MT64.N {

@@ -425,21 +425,21 @@ final class MT64Test: XCTestCase {
     ]
 
     func test1() throws {
-        let m64 = MT64(seed: UInt64(0))
+        var m64 = MT64(seed: 0)
         for i in 0 ..< randomUInt1.count {
             XCTAssertEqual(randomUInt1[i], m64.nextUInt64())
         }
     }
 
     func test2() throws {
-        let m64 = MT64(seed: [UInt64(0x12345), 0x23456, 0x34567, 0x45678])
+        var m64 = MT64(seed: [0x12345, 0x23456, 0x34567, 0x45678])
         for i in 0 ..< randomUInt2.count {
             XCTAssertEqual(randomUInt2[i], m64.nextUInt64())
         }
     }
     
     func test32() throws {
-        let mt64 = MT64()
+        var mt64 = MT64()
         let state = mt64.getState()
         let x64 = mt64.nextUInt64()
         mt64.setState(state: state)
@@ -447,11 +447,5 @@ final class MT64Test: XCTestCase {
         XCTAssertEqual(UInt32(x64 & 0xffffffff), x32)
     }
     
-    func testCopy() throws {
-        let mt64 = MT64()
-        let mtx = MT64(mt: mt64)
-        XCTAssertEqual(mt64, mtx)
-        XCTAssertEqual(mt64.nextUInt64(), mtx.nextUInt64())
-    }
 
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class PCG32: BitGenerator, Equatable {
+public struct PCG32: BitGenerator, CustomStringConvertible, Equatable {
     
     /// The standard multiplier = 6364136223846793005
     public static let Multiplier = UInt64(6364136223846793005)
@@ -39,33 +39,26 @@ public class PCG32: BitGenerator, Equatable {
 
     /// Constructs a PCG32 instance from a randomly generated state
     ///
-    public convenience init() {
+    public init() {
         var state = UInt64(0)
         guard SecRandomCopyBytes(kSecRandomDefault, 8, &state) == errSecSuccess else {
             fatalError("random failed")
         }
         self.init(state: state)
     }
-    
-    /// Constructs a PCG32 instance which is a copy of another PCG32, possibly advanced an amount
-    ///
-    /// - Parameters:
-    ///   - pcg: The other PCG32
-    ///   - advanced: The amount to advance, default is 0
-    public convenience init(pcg: PCG32, advanced: UInt64 = 0) {
-        self.init()
-        self.setState(state: pcg.getState())
-        self.advance(n: advanced)
+
+    public var description: String {
+        return "32 bit Permuted Congruential Generator: PCG-XSH-RR"
     }
 
     /// Required by the RandomNumberGenerator protocol
     ///
     /// - Returns: A random unsigned 64 bit integer
-    public func next() -> UInt64 {
+    public mutating func next() -> UInt64 {
         return self.nextUInt64()
     }
 
-    public func nextUInt32() -> UInt32 {
+    public mutating func nextUInt32() -> UInt32 {
         let n = Int(self.state >> 59)
         let x = UInt32(((self.state ^ (self.state >> 18)) >> 27) & 0xffffffff)
         let xr = (x >> n) | (x << (32 - n))
@@ -73,15 +66,15 @@ public class PCG32: BitGenerator, Equatable {
         return xr
     }
 
-    public func nextUInt64() -> UInt64 {
+    public mutating func nextUInt64() -> UInt64 {
         return UInt64(self.nextUInt32()) << 32 | UInt64(self.nextUInt32())
     }
 
-    public func nextUInt128() -> UInt128 {
+    public mutating func nextUInt128() -> UInt128 {
         return UInt128(self.nextUInt64()) << 64 | UInt128(self.nextUInt64())
     }
 
-    public func nextBit() -> Bool {
+    public mutating func nextBit() -> Bool {
         return nextUInt32() & 1 == 1
     }
 
@@ -113,7 +106,7 @@ public class PCG32: BitGenerator, Equatable {
     ///
     /// - Parameters:
     ///   - state: The new internal generator state - 16 bytes
-    public func setState(state: Bytes) {
+    public mutating func setState(state: Bytes) {
         if state.count == 16 {
             self.state = UInt64(state[0])
             self.state |= UInt64(state[1]) << 8
@@ -134,11 +127,11 @@ public class PCG32: BitGenerator, Equatable {
         }
     }
 
-    /// Advance the generator state as if a certain number of `nextUInt32()` calls had been made.
+    /// Advance the generator state as if a certain number of `nextUInt32()` calls had been made
     ///
     /// - Parameters:
     ///   - n: The amount to advance
-    public func advance(n: UInt64) {
+    public mutating func advance(n: UInt64) {
         var accMultiplier = UInt64(1)
         var accIncrement = UInt64(0)
         var curMultiplier = self.multiplier

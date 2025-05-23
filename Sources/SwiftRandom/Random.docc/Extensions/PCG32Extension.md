@@ -1,6 +1,6 @@
 # ``SwiftRandom/PCG32``
 
-The 32 bit Permuted Congruential Generator: PCG-XSH-RR
+32 bit Permuted Congruential Generator: PCG-XSH-RR
 
 ## Topics
 
@@ -9,11 +9,14 @@ The 32 bit Permuted Congruential Generator: PCG-XSH-RR
 - ``Multiplier``
 - ``DefaultIncrement``
 
+### Properties
+
+- ``description``
+
 ### Constructors
 
 - ``init()``
 - ``init(state:increment:)``
-- ``init(pcg:advanced:)``
 
 ### Methods
 

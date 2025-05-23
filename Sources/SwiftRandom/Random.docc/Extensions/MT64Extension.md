@@ -1,15 +1,18 @@
 # ``SwiftRandom/MT64``
 
-The 64 bit Mersenne Twister
+64 bit Mersenne Twister mt19937
 
 ## Topics
+
+### Properties
+
+- ``description``
 
 ### Constructors
 
 - ``init()``
-- ``init(seed:)-7e3z3``
-- ``init(seed:)-cwc7``
-- ``init(mt:)``
+- ``init(seed:)-(UInt64)``
+- ``init(seed:)-([UInt64])``
 
 ### Methods
 

@@ -1,15 +1,18 @@
 # ``SwiftRandom/MT32``
 
-The 32 bit Mersenne Twister
+32 bit Mersenne Twister mt19937
 
 ## Topics
+
+### Properties
+
+- ``description``
 
 ### Constructors
 
 - ``init()``
-- ``init(seed:)-2fsuz``
-- ``init(seed:)-9o38j``
-- ``init(mt:)``
+- ``init(seed:)-(UInt32)``
+- ``init(seed:)-([UInt32])``
 
 ### Methods
 
@@ -20,6 +23,7 @@ The 32 bit Mersenne Twister
 - ``nextBit()``
 - ``getState()``
 - ``setState(state:)``
+- ``jump(jumps:)``
 
 ### Equality
 - ``==(_:_:)``

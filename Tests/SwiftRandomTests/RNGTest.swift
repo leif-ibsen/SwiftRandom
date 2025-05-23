@@ -10,7 +10,7 @@ import XCTest
 
 final class RNGTest: XCTestCase {
 
-    func doTestInt(_ rng: RNG) throws {
+    func doTestInt(_ rng: inout RNG) throws {
         var x1 = [Int](repeating: 0, count: 1001)
         var x2 = [Int](repeating: 0, count: 1001)
         var state = rng.getState()
@@ -42,7 +42,7 @@ final class RNGTest: XCTestCase {
         XCTAssertEqual(x1, x2)
     }
 
-    func doTestInt32(_ rng: RNG) throws {
+    func doTestInt32(_ rng: inout RNG) throws {
         var x1 = [Int32](repeating: 0, count: 1001)
         var x2 = [Int32](repeating: 0, count: 1001)
         var state = rng.getState()
@@ -74,7 +74,7 @@ final class RNGTest: XCTestCase {
         XCTAssertEqual(x1, x2)
     }
 
-    func doTestInt64(_ rng: RNG) throws {
+    func doTestInt64(_ rng: inout RNG) throws {
         var x1 = [Int64](repeating: 0, count: 1001)
         var x2 = [Int64](repeating: 0, count: 1001)
         var state = rng.getState()
@@ -106,7 +106,7 @@ final class RNGTest: XCTestCase {
         XCTAssertEqual(x1, x2)
     }
 
-    func doTestInt128(_ rng: RNG) throws {
+    func doTestInt128(_ rng: inout RNG) throws {
         var x1 = [Int128](repeating: 0, count: 1001)
         var x2 = [Int128](repeating: 0, count: 1001)
         var state = rng.getState()
@@ -138,7 +138,7 @@ final class RNGTest: XCTestCase {
         XCTAssertEqual(x1, x2)
     }
 
-    func doTestUInt(_ rng: RNG) throws {
+    func doTestUInt(_ rng: inout RNG) throws {
         var x1 = [UInt](repeating: 0, count: 1001)
         var x2 = [UInt](repeating: 0, count: 1001)
         let state = rng.getState()
@@ -152,7 +152,7 @@ final class RNGTest: XCTestCase {
         XCTAssertEqual(x1, x2)
     }
 
-    func doTestUInt32(_ rng: RNG) throws {
+    func doTestUInt32(_ rng: inout RNG) throws {
         var x1 = [UInt32](repeating: 0, count: 1001)
         var x2 = [UInt32](repeating: 0, count: 1001)
         let state = rng.getState()
@@ -166,7 +166,7 @@ final class RNGTest: XCTestCase {
         XCTAssertEqual(x1, x2)
     }
 
-    func doTestUInt64(_ rng: RNG) throws {
+    func doTestUInt64(_ rng: inout RNG) throws {
         var x1 = [UInt64](repeating: 0, count: 1001)
         var x2 = [UInt64](repeating: 0, count: 1001)
         let state = rng.getState()
@@ -180,7 +180,7 @@ final class RNGTest: XCTestCase {
         XCTAssertEqual(x1, x2)
     }
 
-    func doTestUInt128(_ rng: RNG) throws {
+    func doTestUInt128(_ rng: inout RNG) throws {
         var x1 = [UInt128](repeating: 0, count: 1001)
         var x2 = [UInt128](repeating: 0, count: 1001)
         let state = rng.getState()
@@ -194,7 +194,7 @@ final class RNGTest: XCTestCase {
         XCTAssertEqual(x1, x2)
     }
 
-    func doTestMinMaxInt(_ rng: RNG) throws {
+    func doTestMinMaxInt(_ rng: inout RNG) throws {
         XCTAssertTrue(rng.randomInt(in: 0 ... 0) == 0)
         XCTAssertTrue(rng.randomInt(in: 0 ..< 1) == 0)
         XCTAssertTrue(rng.randomInt(in: Int.max ... Int.max) == Int.max)
@@ -240,7 +240,7 @@ final class RNGTest: XCTestCase {
         XCTAssertTrue(x128_1 == Int128.min || x128_1 == Int128.min + 1)
     }
 
-    func doTestMinMaxUInt(_ rng: RNG) throws {
+    func doTestMinMaxUInt(_ rng: inout RNG) throws {
         XCTAssertTrue(rng.randomUInt(in: UInt(0) ... UInt(0)) == 0)
         XCTAssertTrue(rng.randomUInt(in: UInt(0) ..< UInt(1)) == 0)
         XCTAssertTrue(rng.randomUInt(in: UInt.max ... UInt.max) == UInt.max)
@@ -278,7 +278,7 @@ final class RNGTest: XCTestCase {
         XCTAssertTrue(rng.randomUInt(in: UInt128.min ..< UInt128.min + 1) == UInt128.min)
     }
 
-    func doTestFloat(_ rng: RNG) throws {
+    func doTestFloat(_ rng: inout RNG) throws {
         for _ in 0 ..< 1000 {
             let x = rng.randomFloat(in: 0.0 ..< 1.0)
             XCTAssertTrue(0.0 <= x && x < 1.0)
@@ -286,82 +286,82 @@ final class RNGTest: XCTestCase {
     }
 
     func testInt() throws {
-        let mt32 = RNG(bg: MT32())
-        let mt64 = RNG(bg: MT64())
-        let pcg32 = RNG(bg: PCG32())
-        let pcg64 = RNG(bg: PCG64())
-        try doTestInt(mt32)
-        try doTestInt(mt64)
-        try doTestInt(pcg32)
-        try doTestInt(pcg64)
-        try doTestInt32(mt32)
-        try doTestInt32(mt64)
-        try doTestInt32(pcg32)
-        try doTestInt32(pcg64)
-        try doTestInt64(mt32)
-        try doTestInt64(mt64)
-        try doTestInt64(pcg32)
-        try doTestInt64(pcg64)
-        try doTestInt128(mt32)
-        try doTestInt128(mt64)
-        try doTestInt128(pcg32)
-        try doTestInt128(pcg64)
+        var mt32 = RNG(bg: MT32())
+        var mt64 = RNG(bg: MT64())
+        var pcg32 = RNG(bg: PCG32())
+        var pcg64 = RNG(bg: PCG64())
+        try doTestInt(&mt32)
+        try doTestInt(&mt64)
+        try doTestInt(&pcg32)
+        try doTestInt(&pcg64)
+        try doTestInt32(&mt32)
+        try doTestInt32(&mt64)
+        try doTestInt32(&pcg32)
+        try doTestInt32(&pcg64)
+        try doTestInt64(&mt32)
+        try doTestInt64(&mt64)
+        try doTestInt64(&pcg32)
+        try doTestInt64(&pcg64)
+        try doTestInt128(&mt32)
+        try doTestInt128(&mt64)
+        try doTestInt128(&pcg32)
+        try doTestInt128(&pcg64)
     }
 
     func testUInt() throws {
-        let mt32 = RNG(bg: MT32())
-        let mt64 = RNG(bg: MT64())
-        let pcg32 = RNG(bg: PCG32())
-        let pcg64 = RNG(bg: PCG64())
-        try doTestUInt(mt32)
-        try doTestUInt(mt64)
-        try doTestUInt(pcg32)
-        try doTestUInt(pcg64)
-        try doTestUInt32(mt32)
-        try doTestUInt32(mt64)
-        try doTestUInt32(pcg32)
-        try doTestUInt32(pcg64)
-        try doTestUInt64(mt32)
-        try doTestUInt64(mt64)
-        try doTestUInt64(pcg32)
-        try doTestUInt64(pcg64)
-        try doTestUInt128(mt32)
-        try doTestUInt128(mt64)
-        try doTestUInt128(pcg32)
-        try doTestUInt128(pcg64)
+        var mt32 = RNG(bg: MT32())
+        var mt64 = RNG(bg: MT64())
+        var pcg32 = RNG(bg: PCG32())
+        var pcg64 = RNG(bg: PCG64())
+        try doTestUInt(&mt32)
+        try doTestUInt(&mt64)
+        try doTestUInt(&pcg32)
+        try doTestUInt(&pcg64)
+        try doTestUInt32(&mt32)
+        try doTestUInt32(&mt64)
+        try doTestUInt32(&pcg32)
+        try doTestUInt32(&pcg64)
+        try doTestUInt64(&mt32)
+        try doTestUInt64(&mt64)
+        try doTestUInt64(&pcg32)
+        try doTestUInt64(&pcg64)
+        try doTestUInt128(&mt32)
+        try doTestUInt128(&mt64)
+        try doTestUInt128(&pcg32)
+        try doTestUInt128(&pcg64)
     }
 
     func testMinMaxInt() throws {
-        let mt32 = RNG(bg: MT32())
-        let mt64 = RNG(bg: MT64())
-        let pcg32 = RNG(bg: PCG32())
-        let pcg64 = RNG(bg: PCG64())
-        try doTestMinMaxInt(mt32)
-        try doTestMinMaxInt(mt64)
-        try doTestMinMaxInt(pcg32)
-        try doTestMinMaxInt(pcg64)
+        var mt32 = RNG(bg: MT32())
+        var mt64 = RNG(bg: MT64())
+        var pcg32 = RNG(bg: PCG32())
+        var pcg64 = RNG(bg: PCG64())
+        try doTestMinMaxInt(&mt32)
+        try doTestMinMaxInt(&mt64)
+        try doTestMinMaxInt(&pcg32)
+        try doTestMinMaxInt(&pcg64)
     }
 
     func testMinMaxUInt() throws {
-        let mt32 = RNG(bg: MT32())
-        let mt64 = RNG(bg: MT64())
-        let pcg32 = RNG(bg: PCG32())
-        let pcg64 = RNG(bg: PCG64())
-        try doTestMinMaxUInt(mt32)
-        try doTestMinMaxUInt(mt64)
-        try doTestMinMaxUInt(pcg32)
-        try doTestMinMaxUInt(pcg64)
+        var mt32 = RNG(bg: MT32())
+        var mt64 = RNG(bg: MT64())
+        var pcg32 = RNG(bg: PCG32())
+        var pcg64 = RNG(bg: PCG64())
+        try doTestMinMaxUInt(&mt32)
+        try doTestMinMaxUInt(&mt64)
+        try doTestMinMaxUInt(&pcg32)
+        try doTestMinMaxUInt(&pcg64)
     }
 
     func testFloat() throws {
-        let mt32 = RNG(bg: MT32())
-        let mt64 = RNG(bg: MT64())
-        let pcg32 = RNG(bg: PCG32())
-        let pcg64 = RNG(bg: PCG64())
-        try doTestFloat(mt32)
-        try doTestFloat(mt64)
-        try doTestFloat(pcg32)
-        try doTestFloat(pcg64)
+        var mt32 = RNG(bg: MT32())
+        var mt64 = RNG(bg: MT64())
+        var pcg32 = RNG(bg: PCG32())
+        var pcg64 = RNG(bg: PCG64())
+        try doTestFloat(&mt32)
+        try doTestFloat(&mt64)
+        try doTestFloat(&pcg32)
+        try doTestFloat(&pcg64)
     }
 
 }

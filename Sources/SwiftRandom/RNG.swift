@@ -13,12 +13,12 @@ public typealias Byte = UInt8
 /// Array of unsigned 8 bit values
 public typealias Bytes = [UInt8]
 
-public class RNG {
+public struct RNG: CustomStringConvertible {
     
     static let D53 = Double(1 << 53)
     
     // Double value in 0.0 ..< 1.0
-    func nextDouble() -> Double {
+    mutating func nextDouble() -> Double {
         return Double(self.bitGenerator.nextUInt64() & 0x1fffffffffffff) / RNG.D53
     }
 
@@ -27,15 +27,20 @@ public class RNG {
     /// Constructs an RNG instance from a bit generator
     ///
     /// - Parameters:
-    ///   - bg: An instance of a class that conforms to the ``BitGenerator`` protocol
+    ///   - bg: An instance of a structure that conforms to the ``BitGenerator`` protocol
     public init(bg: BitGenerator) {
         self.bitGenerator = bg
+    }
+    
+    /// Description of `self`
+    public var description: String {
+        return "RNG based on " + self.bitGenerator.description
     }
 
     /// Random bit
     ///
     /// - Returns: A random bit
-    public func randomBit() -> Bool {
+    public mutating func randomBit() -> Bool {
         return self.bitGenerator.nextBit()
     }
 
@@ -46,7 +51,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: An open `Int` range
     /// - Returns: A random integer in the specified range
-    public func randomInt(in range: Range<Int>) -> Int {
+    public mutating func randomInt(in range: Range<Int>) -> Int {
         return randomInt(in: range.lowerBound ... range.upperBound - 1)
     }
 
@@ -55,7 +60,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: An open `Int32` range
     /// - Returns: A random 32 bit integer in the specified range
-    public func randomInt(in range: Range<Int32>) -> Int32 {
+    public mutating func randomInt(in range: Range<Int32>) -> Int32 {
         return randomInt(in: range.lowerBound ... range.upperBound - 1)
     }
 
@@ -64,7 +69,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: An open `Ìnt64` range
     /// - Returns: A random 64 bit integer in the specified range
-    public func randomInt(in range: Range<Int64>) -> Int64 {
+    public mutating func randomInt(in range: Range<Int64>) -> Int64 {
         return randomInt(in: range.lowerBound ... range.upperBound - 1)
     }
 
@@ -73,7 +78,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: An open `Int128` range
     /// - Returns: A random 128 bit integer in the specified range
-    public func randomInt(in range: Range<Int128>) -> Int128 {
+    public mutating func randomInt(in range: Range<Int128>) -> Int128 {
         return randomInt(in: range.lowerBound ... range.upperBound - 1)
     }
 
@@ -82,7 +87,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: An open `UInt` range
     /// - Returns: A random unsigned integer in the specified range
-    public func randomUInt(in range: Range<UInt>) -> UInt {
+    public mutating func randomUInt(in range: Range<UInt>) -> UInt {
         return randomUInt(in: range.lowerBound ... range.upperBound - 1)
     }
     
@@ -91,7 +96,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: An open `UInt32` range
     /// - Returns: A random unsigned 32 bit integer in the specified range
-    public func randomUInt(in range: Range<UInt32>) -> UInt32 {
+    public mutating func randomUInt(in range: Range<UInt32>) -> UInt32 {
         return randomUInt(in: range.lowerBound ... range.upperBound - 1)
     }
     
@@ -100,7 +105,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: An open `UInt64` range
     /// - Returns: A random unsigned 64 bit integer in the specified range
-    public func randomUInt(in range: Range<UInt64>) -> UInt64 {
+    public mutating func randomUInt(in range: Range<UInt64>) -> UInt64 {
         return randomUInt(in: range.lowerBound ... range.upperBound - 1)
     }
 
@@ -109,7 +114,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: An open `UInt128` range
     /// - Returns: A random unsigned 128 bit integer in the specified range
-    public func randomUInt(in range: Range<UInt128>) -> UInt128 {
+    public mutating func randomUInt(in range: Range<UInt128>) -> UInt128 {
         return randomUInt(in: range.lowerBound ... range.upperBound - 1)
     }
 
@@ -120,7 +125,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: A closed `Int` range
     /// - Returns: A random integer in the specified range
-    public func randomInt(in range: ClosedRange<Int>) -> Int {
+    public mutating func randomInt(in range: ClosedRange<Int>) -> Int {
         return Int(randomInt(in: Int64(range.lowerBound) ... Int64(range.upperBound)))
     }
 
@@ -129,7 +134,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: A closed `Int32` range
     /// - Returns: A random 32 bit integer in the specified range
-    public func randomInt(in range: ClosedRange<Int32>) -> Int32 {
+    public mutating func randomInt(in range: ClosedRange<Int32>) -> Int32 {
         if range.lowerBound == range.upperBound {
             return range.lowerBound
         }
@@ -147,7 +152,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: A closed `Int64` range
     /// - Returns: A random 64 bit integer in the specified range
-    public func randomInt(in range: ClosedRange<Int64>) -> Int64 {
+    public mutating func randomInt(in range: ClosedRange<Int64>) -> Int64 {
         if range.lowerBound == range.upperBound {
             return range.lowerBound
         }
@@ -165,7 +170,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: A closed `Int128` range
     /// - Returns: A random 128 bit integer in the specified range
-    public func randomInt(in range: ClosedRange<Int128>) -> Int128 {
+    public mutating func randomInt(in range: ClosedRange<Int128>) -> Int128 {
         if range.lowerBound == range.upperBound {
             return range.lowerBound
         }
@@ -183,7 +188,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: A closed `UInt` range
     /// - Returns: A random unsigned integer in the specified range
-    public func randomUInt(in range: ClosedRange<UInt>) -> UInt {
+    public mutating func randomUInt(in range: ClosedRange<UInt>) -> UInt {
         return UInt(randomUInt(in: UInt64(range.lowerBound) ... UInt64(range.upperBound)))
     }
 
@@ -192,7 +197,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: A closed `UInt32` range
     /// - Returns: A random unsigned 32 bit integer in the specified range
-    public func randomUInt(in range: ClosedRange<UInt32>) -> UInt32 {
+    public mutating func randomUInt(in range: ClosedRange<UInt32>) -> UInt32 {
         if range.lowerBound == range.upperBound {
             return range.lowerBound
         }
@@ -210,7 +215,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: A closed `UInt64` range
     /// - Returns: A random unsigned 64 bit integer in the specified range
-    public func randomUInt(in range: ClosedRange<UInt64>) -> UInt64 {
+    public mutating func randomUInt(in range: ClosedRange<UInt64>) -> UInt64 {
         if range.lowerBound == range.upperBound {
             return range.lowerBound
         }
@@ -228,7 +233,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: A closed `UInt128` range
     /// - Returns: A random unsigned 128 bit integer in the specified range
-    public func randomUInt(in range: ClosedRange<UInt128>) -> UInt128 {
+    public mutating func randomUInt(in range: ClosedRange<UInt128>) -> UInt128 {
         if range.lowerBound == range.upperBound {
             return range.lowerBound
         }
@@ -246,7 +251,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: An open `Double` range
     /// - Returns: A random floating point value in the specified range
-    public func randomFloat(in range: Range<Double>) -> Double {
+    public mutating func randomFloat(in range: Range<Double>) -> Double {
         return range.lowerBound + (range.upperBound - range.lowerBound) * self.nextDouble()
     }
     
@@ -261,7 +266,7 @@ public class RNG {
     ///
     /// - Parameters:
     ///   - state: The new internal state of the underlying bit generator
-    public func setState(state: Bytes) {
+    public mutating func setState(state: Bytes) {
         self.bitGenerator.setState(state: state)
     }
 
@@ -272,7 +277,7 @@ public class RNG {
     ///   - mean: The mean value
     ///   - stdev: The standard deviation, a positive number
     ///   - values: Filled with the generated values
-    public func normalDistribution(mean: Double, stdev: Double, values: inout [Double]) {
+    public mutating func normalDistribution(mean: Double, stdev: Double, values: inout [Double]) {
         precondition(stdev > 0.0, "Standard deviation must be positive")
         var s: Double
         var x1: Double
@@ -297,7 +302,7 @@ public class RNG {
     /// - Parameters:
     ///   - mean: The mean value, a positive number
     ///   - values: Filled with the generated values
-    public func exponentialDistribution(mean: Double, values: inout [Double]) {
+    public mutating func exponentialDistribution(mean: Double, values: inout [Double]) {
         precondition(mean > 0.0, "Mean value must be positive")
         self.uniformDistribution(in: 0.0 ..< 1.0, values: &values)
         for i in 0 ..< values.count {
@@ -310,7 +315,7 @@ public class RNG {
     /// - Parameters:
     ///   - range: An open `Double` range
     ///   - values: Filled with the generated values
-    public func uniformDistribution(in range: Range<Double>, values: inout [Double]) {
+    public mutating func uniformDistribution(in range: Range<Double>, values: inout [Double]) {
         for i in 0 ..< values.count {
             values[i] = self.randomFloat(in: range)
         }

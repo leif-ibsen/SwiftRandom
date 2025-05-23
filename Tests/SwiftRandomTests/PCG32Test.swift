@@ -33,8 +33,8 @@ final class PCG32Test: XCTestCase {
     }
     
     func testAdvance1() throws {
-        let pcg1 = PCG32()
-        let pcg2 = PCG32(pcg: pcg1)
+        var pcg1 = PCG32()
+        var pcg2 = pcg1
         for _ in 0 ..< 10000 {
             let _ = pcg1.nextUInt32()
         }
@@ -43,7 +43,7 @@ final class PCG32Test: XCTestCase {
     }
 
     func testAdvance2() throws {
-        let pcg32 = PCG32()
+        var pcg32 = PCG32()
         let state = pcg32.getState()
         pcg32.advance(n: UInt64(Int64.max))
         pcg32.advance(n: UInt64(Int64.max))
@@ -56,15 +56,8 @@ final class PCG32Test: XCTestCase {
         XCTAssertEqual(state, pcg32.getState())
     }
 
-    func testAdvance3() throws {
-        let pcg1 = PCG32()
-        let pcg2 = PCG32(pcg: pcg1, advanced: 100000)
-        pcg1.advance(n: 100000)
-        XCTAssertEqual(pcg1, pcg2)
-    }
-
     func test64() throws {
-        let pcg32 = PCG32()
+        var pcg32 = PCG32()
         let state = pcg32.getState()
         let x64 = pcg32.nextUInt64()
         pcg32.setState(state: state)
@@ -72,10 +65,4 @@ final class PCG32Test: XCTestCase {
         XCTAssertEqual(x64, x32x2)
     }
 
-    func testCopy() throws {
-        let pcg32 = PCG32()
-        let pcgx = PCG32(pcg: pcg32)
-        XCTAssertEqual(pcg32, pcgx)
-        XCTAssertEqual(pcg32.nextUInt64(), pcgx.nextUInt64())
-    }
 }

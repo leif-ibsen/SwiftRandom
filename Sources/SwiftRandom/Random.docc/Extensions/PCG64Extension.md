@@ -1,6 +1,6 @@
 # ``SwiftRandom/PCG64``
 
-The 64 bit Permuted Congruential Generator: PCG-XSL-RR
+64 bit Permuted Congruential Generator: PCG-XSL-RR
 
 ## Topics
 
@@ -9,11 +9,14 @@ The 64 bit Permuted Congruential Generator: PCG-XSL-RR
 - ``Multiplier``
 - ``DefaultIncrement``
 
+### Properties
+
+- ``description``
+
 ### Constructors
 
 - ``init()``
 - ``init(state:increment:)``
-- ``init(pcg:advanced:)``
 
 ### Methods
 
